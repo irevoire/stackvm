@@ -1,17 +1,17 @@
 //! This function provides an statement and
 //! the corresponding manually written stackvm instructions.
 
-use stackvm::inst;
+use stackvm::{expr, inst, stmt};
 use std::collections::HashMap;
 
 fn main() {
-    /*
-    let x = var::Var("x");
-    let y = var::Var("y");
-    let z = var::Var("z");
-    let one = constexpr::ConstExpr(1);
-    */
     let extent = 4;
+
+    let x = &expr::var("x");
+    let i = &expr::var("i");
+    let stmt = stmt::r#for("i", expr::r#const(extent), stmt::assign("x", x + i));
+
+    println!("{}", stmt);
 
     let program = vec![
         inst::pushconst(0),

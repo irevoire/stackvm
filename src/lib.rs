@@ -1,5 +1,6 @@
-// mod expr;
+pub mod expr;
 pub mod inst;
+pub mod stmt;
 
 use std::collections::HashMap;
 

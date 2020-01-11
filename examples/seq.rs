@@ -1,16 +1,20 @@
 //! This function provides an statement and
 //! the corresponding manually written stackvm instructions.
 
-use stackvm::inst;
+use stackvm::{expr, inst, stmt};
 use std::collections::HashMap;
 
 fn main() {
-    /*
-    let x = var::Var("x");
-    let y = var::Var("y");
-    let z = var::Var("z");
-    let one = constexpr::ConstExpr(1);
-    */
+    let x = &expr::var("x");
+    let y = &expr::var("y");
+    let z = &expr::var("z");
+    let one = &expr::r#const(1);
+    let stmt = stmt::seq(vec![
+        stmt::assign("z", &(x + y) * y),
+        stmt::assign("z", z + one),
+    ]);
+
+    println!("{}", stmt);
 
     let program = vec![
         inst::vload("x"),
