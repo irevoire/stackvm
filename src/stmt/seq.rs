@@ -23,3 +23,11 @@ impl std::fmt::Display for Seq {
         writeln!(f, "}}")
     }
 }
+
+use crate::inst;
+
+impl Seq {
+    pub fn compile(&self) -> Vec<inst::Inst> {
+        self.list.iter().flat_map(|stmt| stmt.compile()).collect()
+    }
+}

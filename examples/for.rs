@@ -12,6 +12,13 @@ fn main() {
     let stmt = stmt::r#for("i", expr::r#const(extent), stmt::assign("x", x + i));
 
     println!("{}", stmt);
+    let program = stmt.compile();
+
+    let mut vmap = HashMap::new();
+    vmap.insert("x".to_string(), 1);
+
+    stackvm::run(&program, &mut vmap, false);
+    println!("compiled version:\n{:?}", vmap);
 
     let program = vec![
         inst::pushconst(0),
@@ -35,5 +42,5 @@ fn main() {
     vmap.insert("x".to_string(), 1);
 
     stackvm::run(&program, &mut vmap, false);
-    println!("{:?}", vmap);
+    println!("handwritten version:\n{:?}", vmap);
 }

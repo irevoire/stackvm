@@ -29,3 +29,14 @@ impl std::fmt::Display for Mul {
         write!(f, "({} * {})", self.a, self.b)
     }
 }
+
+use crate::inst;
+
+impl Mul {
+    pub fn compile(&self) -> Vec<inst::Inst> {
+        let mut a = self.a.compile();
+        a.append(&mut self.b.compile());
+        a.push(inst::mul());
+        a
+    }
+}

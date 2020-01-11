@@ -33,3 +33,13 @@ impl std::fmt::Display for Stmt {
         }
     }
 }
+
+impl Stmt {
+    pub fn compile(&self) -> Vec<crate::inst::Inst> {
+        match self {
+            Stmt::Seq(a) => a.compile(),
+            Stmt::For(a) => a.compile(),
+            Stmt::Assign(a) => a.compile(),
+        }
+    }
+}

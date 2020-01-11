@@ -27,6 +27,6 @@ impl VStore {
 
 impl std::fmt::Display for VStore {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "vload {}", self.name)
+        write!(f, "vstore {}", self.name)
     }
 }

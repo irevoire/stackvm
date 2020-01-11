@@ -29,3 +29,13 @@ impl std::fmt::Display for Assign {
         write!(f, "{} := {}", self.name, self.expr)
     }
 }
+
+use crate::inst;
+
+impl Assign {
+    pub fn compile(&self) -> Vec<inst::Inst> {
+        let mut base = self.expr.compile();
+        base.push(inst::vstore(&self.name));
+        base
+    }
+}

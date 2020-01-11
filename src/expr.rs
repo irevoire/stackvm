@@ -81,3 +81,15 @@ impl std::ops::Mul for &Expr {
         mul(&self, &other)
     }
 }
+
+impl Expr {
+    pub fn compile(&self) -> Vec<crate::inst::Inst> {
+        match self {
+            Expr::Var(a) => a.compile(),
+            Expr::Add(a) => a.compile(),
+            Expr::Mul(a) => a.compile(),
+            Expr::Eq(a) => a.compile(),
+            Expr::Const(a) => a.compile(),
+        }
+    }
+}

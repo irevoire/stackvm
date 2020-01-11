@@ -26,3 +26,11 @@ impl std::fmt::Display for Var {
         write!(f, "{}", self.name)
     }
 }
+
+use crate::inst;
+
+impl Var {
+    pub fn compile(&self) -> Vec<inst::Inst> {
+        vec![inst::vload(&self.name)]
+    }
+}

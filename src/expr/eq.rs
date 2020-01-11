@@ -26,3 +26,14 @@ impl std::fmt::Display for Eq {
         write!(f, "({} == {})", self.a, self.b)
     }
 }
+
+use crate::inst;
+
+impl Eq {
+    pub fn compile(&self) -> Vec<inst::Inst> {
+        let mut c = self.a.compile();
+        c.append(&mut self.b.compile());
+        c.push(inst::eq());
+        c
+    }
+}

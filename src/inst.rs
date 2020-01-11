@@ -43,6 +43,7 @@ pub fn vstore(name: &str) -> Inst {
 }
 
 /// Base enum for all StackVM instructions.
+#[derive(Debug)]
 pub enum Inst {
     Add(add::Add),
     Mul(mul::Mul),

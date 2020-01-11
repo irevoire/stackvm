@@ -20,3 +20,11 @@ impl std::fmt::Display for Const {
         write!(f, "{}", self.value)
     }
 }
+
+use crate::inst;
+
+impl Const {
+    pub fn compile(&self) -> Vec<inst::Inst> {
+        vec![inst::pushconst(self.value)]
+    }
+}

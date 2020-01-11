@@ -15,8 +15,16 @@ fn main() {
     ]);
 
     println!("{}", stmt);
+    let program = stmt.compile();
 
-    let program = vec![
+    let mut vmap = HashMap::new();
+    vmap.insert("x".to_string(), 2);
+    vmap.insert("y".to_string(), 3);
+
+    stackvm::run(&program, &mut vmap, false);
+    println!("compiled version:\n{:?}", vmap);
+
+    let program2 = vec![
         inst::vload("x"),
         inst::vload("y"),
         inst::add(),
@@ -33,6 +41,6 @@ fn main() {
     vmap.insert("x".to_string(), 2);
     vmap.insert("y".to_string(), 3);
 
-    stackvm::run(&program, &mut vmap, false);
-    println!("{:?}", vmap);
+    stackvm::run(&program2, &mut vmap, false);
+    println!("handwritten version:\n{:?}", vmap);
 }
