@@ -27,6 +27,27 @@ impl std::fmt::Display for Eq {
     }
 }
 
+impl crate::Graph for Eq {
+    fn name(&self) -> &str {
+        "Eq"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        let name = index;
+        let a = index + 1;
+
+        println!("\t{} [label = {}];", name, self.name());
+        println!("\t{} [label = {}];", a, self.a.name());
+        println!("\t{} -> {};", name, a);
+
+        let b = self.a.graph(a) + 1;
+
+        println!("\t{} [label = {}];", b, self.b.name());
+        println!("\t{} -> {};", name, b);
+        self.b.graph(b)
+    }
+}
+
 use crate::inst;
 
 impl Eq {

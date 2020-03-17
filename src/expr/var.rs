@@ -27,6 +27,21 @@ impl std::fmt::Display for Var {
     }
 }
 
+impl crate::Graph for Var {
+    fn name(&self) -> &str {
+        "Var"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        let name = index;
+        let value = index + 1;
+        println!("\t{} [label = {}];", name, self.name());
+        println!("\t{} [label = \"{}\"];", value, self.name);
+        println!("\t{} -> {};", name, value);
+        value
+    }
+}
+
 use crate::inst;
 
 impl Var {

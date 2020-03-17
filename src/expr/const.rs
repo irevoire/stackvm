@@ -21,6 +21,21 @@ impl std::fmt::Display for Const {
     }
 }
 
+impl crate::Graph for Const {
+    fn name(&self) -> &str {
+        "Const"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        let name = index;
+        let value = index + 1;
+        println!("\t{} [label = {}];", name, self.name());
+        println!("\t{} [label = \"{}\"];", value, self.value);
+        println!("\t{} -> {};", name, value);
+        value
+    }
+}
+
 use crate::inst;
 
 impl Const {

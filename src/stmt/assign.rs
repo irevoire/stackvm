@@ -32,6 +32,26 @@ impl std::fmt::Display for Assign {
 
 use crate::inst;
 
+impl crate::Graph for Assign {
+    fn name(&self) -> &str {
+        "Assign"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        let name = index;
+        let ident = index + 1;
+        let expr = index + 2;
+
+        println!("\t{} [label = {}];", name, self.name());
+        println!("\t{} [label = {}];", ident, self.name);
+        println!("\t{} [label = {}];", expr, self.expr.name());
+
+        println!("\t{} -> {};", name, ident);
+        println!("\t{} -> {};", name, expr);
+        self.expr.graph(index + 2)
+    }
+}
+
 impl Assign {
     pub fn compile(&self) -> Vec<inst::Inst> {
         let mut base = self.expr.compile();

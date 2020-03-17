@@ -47,6 +47,30 @@ impl std::fmt::Display for For {
     }
 }
 
+impl crate::Graph for For {
+    fn name(&self) -> &str {
+        "For"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        let name = index;
+        let var = index + 1;
+        let extent = index + 2;
+
+        println!("\t{} [label = {}];", name, self.name());
+        println!("\t{} [label = {}];", var, self.var);
+        println!("\t{} [label = {}];", extent, self.extent.name());
+
+        println!("\t{} -> {};", name, var);
+        println!("\t{} -> {};", name, extent);
+        let body = self.extent.graph(extent) + 1;
+
+        println!("\t{} [label = {}];", body, self.body.name());
+        println!("\t{} -> {};", name, body);
+        self.body.graph(body)
+    }
+}
+
 use crate::{expr, inst};
 
 impl For {

@@ -53,6 +53,16 @@ impl std::fmt::Display for Expr {
     }
 }
 
+impl crate::Graph for Expr {
+    fn name(&self) -> &str {
+        "Expr"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        self.inner().graph(index)
+    }
+}
+
 // here, because of lifetime if we add two expression they will be consumed and impossible to
 // reuse:
 // ```
@@ -83,6 +93,16 @@ impl std::ops::Mul for &Expr {
 }
 
 impl Expr {
+    fn inner(&self) -> Rc<dyn crate::Graph> {
+        match self {
+            Expr::Var(inner) => inner.clone(),
+            Expr::Add(inner) => inner.clone(),
+            Expr::Mul(inner) => inner.clone(),
+            Expr::Eq(inner) => inner.clone(),
+            Expr::Const(inner) => inner.clone(),
+        }
+    }
+
     pub fn compile(&self) -> Vec<crate::inst::Inst> {
         match self {
             Expr::Var(a) => a.compile(),

@@ -34,7 +34,25 @@ impl std::fmt::Display for Stmt {
     }
 }
 
+impl crate::Graph for Stmt {
+    fn name(&self) -> &str {
+        "Stmt"
+    }
+
+    fn graph(&self, index: usize) -> usize {
+        self.inner().graph(index)
+    }
+}
+
 impl Stmt {
+    fn inner(&self) -> Rc<dyn crate::Graph> {
+        match self {
+            Stmt::Seq(inner) => inner.clone(),
+            Stmt::For(inner) => inner.clone(),
+            Stmt::Assign(inner) => inner.clone(),
+        }
+    }
+
     pub fn compile(&self) -> Vec<crate::inst::Inst> {
         match self {
             Stmt::Seq(a) => a.compile(),
