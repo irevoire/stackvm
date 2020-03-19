@@ -1,14 +1,12 @@
-use stackvm::Graph;
-use stackvm::{expr, stmt};
+use stackvm::{expr, Graph};
 
 fn main() {
-    let extent = 4;
+    let a = &expr::r#const(1);
+    let b = &expr::r#const(1);
 
-    let x = &expr::var("x");
-    let i = &expr::var("i");
-    let stmt = stmt::r#for("i", expr::r#const(extent), stmt::assign("x", x + i));
+    let expr = a + b;
 
     println!("digraph {{");
-    stmt.graph(0);
+    expr.optimize().graph(0);
     println!("}}");
 }

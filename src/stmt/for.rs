@@ -102,4 +102,8 @@ impl For {
         c.push(inst::jump(cmp - (c.len() + 1) as i64));
         c
     }
+
+    pub fn optimize(&self) -> super::Stmt {
+        super::r#for(&self.var, self.extent.optimize(), self.body.optimize())
+    }
 }

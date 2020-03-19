@@ -3,25 +3,24 @@ mod r#for;
 mod seq;
 
 use crate::expr::Expr;
-use std::rc::Rc;
 
 pub fn seq(list: Vec<Stmt>) -> Stmt {
-    Stmt::Seq(Rc::new(seq::Seq::new(list)))
+    Stmt::Seq(Box::new(seq::Seq::new(list)))
 }
 pub fn r#for(var: &str, extent: Expr, body: Stmt) -> Stmt {
-    Stmt::For(Rc::new(r#for::For::new(var, extent, body)))
+    Stmt::For(Box::new(r#for::For::new(var, extent, body)))
 }
 
 pub fn assign(name: &str, expr: crate::expr::Expr) -> Stmt {
-    Stmt::Assign(Rc::new(assign::Assign::new(name, expr)))
+    Stmt::Assign(Box::new(assign::Assign::new(name, expr)))
 }
 
 /// Base enum for all statements.
 #[derive(Debug)]
 pub enum Stmt {
-    Seq(Rc<seq::Seq>),
-    For(Rc<r#for::For>),
-    Assign(Rc<assign::Assign>),
+    Seq(Box<seq::Seq>),
+    For(Box<r#for::For>),
+    Assign(Box<assign::Assign>),
 }
 
 impl std::fmt::Display for Stmt {
@@ -40,24 +39,28 @@ impl crate::Graph for Stmt {
     }
 
     fn graph(&self, index: usize) -> usize {
-        self.inner().graph(index)
+        match self {
+            Stmt::Seq(inner) => inner.graph(index),
+            Stmt::For(inner) => inner.graph(index),
+            Stmt::Assign(inner) => inner.graph(index),
+        }
     }
 }
 
 impl Stmt {
-    fn inner(&self) -> Rc<dyn crate::Graph> {
-        match self {
-            Stmt::Seq(inner) => inner.clone(),
-            Stmt::For(inner) => inner.clone(),
-            Stmt::Assign(inner) => inner.clone(),
-        }
-    }
-
     pub fn compile(&self) -> Vec<crate::inst::Inst> {
         match self {
             Stmt::Seq(a) => a.compile(),
             Stmt::For(a) => a.compile(),
             Stmt::Assign(a) => a.compile(),
+        }
+    }
+
+    pub fn optimize(&self) -> Stmt {
+        match self {
+            Stmt::Seq(inner) => inner.optimize(),
+            Stmt::For(inner) => inner.optimize(),
+            Stmt::Assign(inner) => inner.optimize(),
         }
     }
 }

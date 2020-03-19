@@ -57,4 +57,14 @@ impl Add {
         a.push(inst::add());
         a
     }
+
+    pub fn optimize(&self) -> Expr {
+        let a = self.a.optimize();
+        let b = self.b.optimize();
+
+        match (a, b) {
+            (Expr::Const(a), Expr::Const(b)) => super::r#const(a.value + b.value),
+            (a, b) => super::add(&a, &b),
+        }
+    }
 }

@@ -6,7 +6,7 @@
 ///     The value.
 #[derive(Debug)]
 pub struct Const {
-    value: i64,
+    pub value: i64,
 }
 
 impl Const {
@@ -41,5 +41,9 @@ use crate::inst;
 impl Const {
     pub fn compile(&self) -> Vec<inst::Inst> {
         vec![inst::pushconst(self.value)]
+    }
+
+    pub fn optimize(&self) -> super::Expr {
+        super::r#const(self.value)
     }
 }

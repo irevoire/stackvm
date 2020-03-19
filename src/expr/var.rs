@@ -10,7 +10,7 @@
 /// A variable is uniquely indexed by a name.
 #[derive(Debug)]
 pub struct Var {
-    name: String,
+    pub name: String,
 }
 
 impl Var {
@@ -47,5 +47,9 @@ use crate::inst;
 impl Var {
     pub fn compile(&self) -> Vec<inst::Inst> {
         vec![inst::vload(&self.name)]
+    }
+
+    pub fn optimize(&self) -> super::Expr {
+        super::var(&self.name)
     }
 }

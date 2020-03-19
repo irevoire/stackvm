@@ -46,4 +46,8 @@ impl Seq {
     pub fn compile(&self) -> Vec<inst::Inst> {
         self.list.iter().flat_map(|stmt| stmt.compile()).collect()
     }
+
+    pub fn optimize(&self) -> super::Stmt {
+        super::seq(self.list.iter().map(|stmt| stmt.optimize()).collect())
+    }
 }

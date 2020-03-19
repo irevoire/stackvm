@@ -57,4 +57,15 @@ impl Eq {
         c.push(inst::eq());
         c
     }
+
+    pub fn optimize(&self) -> Expr {
+        let a = self.a.optimize();
+        let b = self.b.optimize();
+        match (a, b) {
+            (Expr::Const(a), Expr::Const(b)) if a.value == b.value => super::r#const(1),
+            (Expr::Const(_), Expr::Const(_)) => super::r#const(0),
+            (Expr::Var(a), Expr::Var(b)) if a.name == b.name => super::r#const(1),
+            (a, b) => super::eq(&a, &b),
+        }
+    }
 }

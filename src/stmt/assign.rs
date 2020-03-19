@@ -58,4 +58,8 @@ impl Assign {
         base.push(inst::vstore(&self.name));
         base
     }
+
+    pub fn optimize(&self) -> super::Stmt {
+        super::assign(&self.name, self.expr.optimize())
+    }
 }

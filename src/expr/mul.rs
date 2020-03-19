@@ -60,4 +60,16 @@ impl Mul {
         a.push(inst::mul());
         a
     }
+
+    pub fn optimize(&self) -> Expr {
+        let a = self.a.optimize();
+        let b = self.b.optimize();
+
+        match (a, b) {
+            (Expr::Const(a), Expr::Const(b)) => super::r#const(a.value * b.value),
+            (_, Expr::Const(c)) | (Expr::Const(c), _) if c.value == 0 => super::r#const(0),
+            (other, Expr::Const(c)) | (Expr::Const(c), other) if c.value == 1 => other,
+            (a, b) => super::mul(&a, &b),
+        }
+    }
 }

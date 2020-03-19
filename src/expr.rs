@@ -59,7 +59,13 @@ impl crate::Graph for Expr {
     }
 
     fn graph(&self, index: usize) -> usize {
-        self.inner().graph(index)
+        match self {
+            Expr::Var(inner) => inner.graph(index),
+            Expr::Add(inner) => inner.graph(index),
+            Expr::Mul(inner) => inner.graph(index),
+            Expr::Eq(inner) => inner.graph(index),
+            Expr::Const(inner) => inner.graph(index),
+        }
     }
 }
 
@@ -93,16 +99,6 @@ impl std::ops::Mul for &Expr {
 }
 
 impl Expr {
-    fn inner(&self) -> Rc<dyn crate::Graph> {
-        match self {
-            Expr::Var(inner) => inner.clone(),
-            Expr::Add(inner) => inner.clone(),
-            Expr::Mul(inner) => inner.clone(),
-            Expr::Eq(inner) => inner.clone(),
-            Expr::Const(inner) => inner.clone(),
-        }
-    }
-
     pub fn compile(&self) -> Vec<crate::inst::Inst> {
         match self {
             Expr::Var(a) => a.compile(),
@@ -110,6 +106,16 @@ impl Expr {
             Expr::Mul(a) => a.compile(),
             Expr::Eq(a) => a.compile(),
             Expr::Const(a) => a.compile(),
+        }
+    }
+
+    pub fn optimize(&self) -> Self {
+        match self {
+            Expr::Var(inner) => inner.optimize(),
+            Expr::Add(inner) => inner.optimize(),
+            Expr::Mul(inner) => inner.optimize(),
+            Expr::Eq(inner) => inner.optimize(),
+            Expr::Const(inner) => inner.optimize(),
         }
     }
 }
